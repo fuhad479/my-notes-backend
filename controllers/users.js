@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { client } from "../database/connect.js";
 import { trimData } from "../utilities/trimData.js";
 import { encryptPassword } from "../utilities/hashPassword.js";
@@ -36,4 +37,34 @@ export async function registerController(req, res) {
     // send server error that occurred in server
     res.status(500).json({ message: "something went wrong" });
   }
+}
+
+export async function loginController(req, res) {
+  const user = trimData(req.body);
+
+  const preExistingUser = await collection.findOne({ email: user.email });
+
+  if (preExistingUser) {
+    const matchPassword = await bcrypt.compare(
+      user.password,
+      preExistingUser.password
+    );
+
+    req.session.id = preExistingUser._id;
+
+    if (matchPassword) {
+      return res.status(200).json({
+        message: "logged in successfully",
+        user: {
+          first_name: preExistingUser.first_name,
+          last_name: preExistingUser.last_name,
+          email: preExistingUser.email,
+        },
+      });
+    } else {
+      res.status(504).json({ message: "invalid email or password" });
+    }
+  }
+
+  res.status(504).json({ message: "invalid email or password" });
 }
