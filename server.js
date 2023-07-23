@@ -6,7 +6,7 @@ import users from "./routes/users.js";
 import notes from './routes/notes.js';
 import cookieSession from "cookie-session";
 import connect from "./database/connect.js";
-import { validation } from "./middlewares/users.js";
+import { validation, checkAuthentication } from "./middlewares/users.js";
 
 dotenv.config();
 
@@ -31,7 +31,7 @@ app.get("/api", (req, res) => {
 
 // use REST api endpoints
 app.use("/api/users", validation, users);
-app.use("/api/notes", notes);
+app.use("/api/notes", checkAuthentication, notes);
 
 async function establishConnection() {
   try {

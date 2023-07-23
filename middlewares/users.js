@@ -17,3 +17,11 @@ export function validation(req, res, next) {
 
   next();
 }
+
+export function checkAuthentication(req, res, next) {
+  if (req.session.id) {
+    next();
+  } else {
+    res.status(401).json({ message: "You're not authorized" });
+  }
+}

@@ -4,7 +4,7 @@ const db = client.db("my-notes");
 const notes = db.collection("notes");
 
 export async function createNoteController(req, res) {
-  const note = req.body
+  const note = req.body;
 
   try {
     await notes.insertOne(note);
@@ -15,5 +15,10 @@ export async function createNoteController(req, res) {
 }
 
 export async function getAllNotesController(req, res) {
-  res.status(200).json({ message: "get all notes" });
+  try {
+    const all_notes = await notes.find().toArray();
+    res.status(200).json(all_notes);
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+  }
 }
