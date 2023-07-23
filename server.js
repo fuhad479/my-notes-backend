@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 
 import users from "./routes/users.js";
+import notes from './routes/notes.js';
 import cookieSession from "cookie-session";
 import connect from "./database/connect.js";
 import { validation } from "./middlewares/users.js";
@@ -12,7 +13,7 @@ dotenv.config();
 const app = express();
 
 // use builtin or external middleware functions
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -30,6 +31,7 @@ app.get("/api", (req, res) => {
 
 // use REST api endpoints
 app.use("/api/users", validation, users);
+app.use("/api/notes", notes);
 
 async function establishConnection() {
   try {
