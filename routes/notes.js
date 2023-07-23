@@ -3,6 +3,7 @@ import {
   createNoteController,
   getAllNotesController,
   getSingleNoteController,
+  updateSingleNote
 } from "../controllers/notes.js";
 
 const router = Router();
@@ -12,7 +13,7 @@ router.route("/").post(createNoteController).get(getAllNotesController);
 router
   .route("/:id")
   .get(getSingleNoteController)
-  .patch((req, res) => res.status(200).json({ message: "update single note" }))
+  .patch(updateSingleNote)
   .delete((req, res) =>
     res.status(200).json({ message: "delete single note" })
   );

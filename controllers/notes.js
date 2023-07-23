@@ -34,3 +34,32 @@ export async function getSingleNoteController(req, res) {
     res.status(500).json({ message: "something went wrong" });
   }
 }
+
+export async function updateSingleNote(req, res) {
+  const { id } = req.params;
+  const { title, note } = req.body;
+
+  console.log({ title, note });
+
+  const updatedNote = {
+    $set: { title, note },
+  };
+
+  try {
+    await notes.updateOne({ _id: new ObjectId(id) }, updatedNote);
+    res.status(200).json({ message: "updated successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+  }
+}
+
+export async function deleteSingleNote(req, res) {
+  const { id } = req.params;
+
+  try {
+    await notes.deleteOne({ _id: new ObjectId(id) });
+    res.status(200).json({ message: "deleted a single note" });
+  } catch (error) {
+    res.status(500).json({ message: "something went wrong" });
+  }
+}
