@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 
 import users from "./routes/users.js";
-import notes from './routes/notes.js';
+import notes from "./routes/notes.js";
 import cookieSession from "cookie-session";
 import connect from "./database/connect.js";
 import { validation, checkAuthentication } from "./middlewares/users.js";
@@ -13,7 +13,7 @@ dotenv.config();
 const app = express();
 
 // use builtin or external middleware functions
-app.use(cors());
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
