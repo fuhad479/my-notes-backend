@@ -13,7 +13,7 @@ dotenv.config();
 const app = express();
 
 // use builtin or external middleware functions
-app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
@@ -39,7 +39,7 @@ async function establishConnection() {
     await connect();
 
     // start the application server
-    app.listen(process.env.PORT, () => {
+    app.listen(process.env.PORT || 5000, () => {
       console.log(`http://localhost:${process.env.PORT || 5000}`);
     });
   } catch (error) {
